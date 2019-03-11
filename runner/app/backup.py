@@ -8,7 +8,7 @@ import requests
 import json
 import tarfile
 
-def make_tarfile(output_filename, source_dir)
+def make_tarfile(output_filename, source_dir):
 	with tarfile.open(output_filename, "w:gz") as tar:
 		tar.add(source_dir, arcname=os.path.basename(source_dir))
 	tar.close()
@@ -38,7 +38,7 @@ def execute(namespace, deploymconfig, path):
         print('code: ' + str(finalpod.returncode))
 	
 	# Execute OpenShift Command: oc rsync <pod-name>:<path> <localbackupDir> -n <namespace>
-	cmdc = ["oc", "rsync", "-n", namespace, ob.decode('ascii').rstrip() + ":" + path, "/home/daniel/backups/"]
+	cmdc = ["oc", "rsync", "-n", namespace, ob.decode('ascii').rstrip() + ":" + path, "/backups/"]
 	proc = subprocess.Popen(cmdc, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	# Keep for Troubleshooting purposes
 	oc, ec = proc.communicate()
