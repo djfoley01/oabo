@@ -9,7 +9,7 @@ import json
 
 def execute(namespace, deploymconfig, path):
 	# Execute OpenShift Login
-	cmda = ["oc", "login", os.environ["OCPURL"], "--token=" + os.environ["OCPTOKEN"]]
+	cmda = ["oc", "login", os.environ["OCPURL"], "--token=" + os.environ["OCPTOKEN"], "--insecure-skip-tls-verify=true"]
 	login = subprocess.Popen(cmda, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	# Keep for Troubleshooting purposes
         oa, ea = login.communicate()
@@ -18,18 +18,21 @@ def execute(namespace, deploymconfig, path):
         print('code: ' + str(login.returncode))
 
 	# Get POD name
-	cmdb = ["oc", "get", "pods", "-n", namespace, "-l", "deploymentconfig=" + deploymconfig, "|", "grep", "-v", "NAME", "|", "awk", '"{', "print", '$1', '}"']
+	cmdb1 = ["oc", "get", "pods", "-n", namespace, "-l", "deploymentconfig=" + deploymconfig]
+	cmdb2 = ["grep", "-v", "NAME"]
+	cmdb3 = ["awk", '{ print $1 }']
 	#cmdb = ["oc", "get", "pods", "-n", namespace, "-l", "deploymentconfig=" + deploymconfig]
-	pod = subprocess.Popen(cmdb, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	pod1 = subprocess.Popen(cmdb1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	pod2 = subprocess.Popen(cmdb2, stdin=pod1.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	finalpod = subprocess.Popen(cmdb3, stdin=pod2.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # Keep for Troubleshooting purposes
-        ob, eb = pod.communicate()
+        ob, eb = finalpod.communicate()
         print('Output: ' + ob.decode('ascii'))
         print('Error: ' + eb.decode('ascii'))
-        print('code: ' + str(pod.returncode))
-	print(cmdb)
+        print('code: ' + str(finalpod.returncode))
 	
 	# Execute OpenShift Command: oc rsync <pod-name>:<path> <localbackupDir> -n <namespace>
-	cmdc = ["oc", "get", "pods", "-n", namespace]
+	cmdc = ["oc", "rsync", "-n", namespace, ob.decode('ascii').rstrip() + ":" + path, "/home/daniel/backups/"]
 	proc = subprocess.Popen(cmdc, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	# Keep for Troubleshooting purposes
 	oc, ec = proc.communicate()
@@ -41,6 +44,6 @@ def execute(namespace, deploymconfig, path):
 # The PODs name will change relatively frequently, so this
 # application needs to query the primary service 
 
-execute("home", "jenkins", "/home")
+execute("home", "jenkins", "/var/jenkins_home")
 
 
