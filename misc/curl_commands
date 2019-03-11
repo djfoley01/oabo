@@ -1,0 +1,13 @@
+  815  curl -k     -X POST     -d @-     -H "Authorization: Bearer $TOKEN"     -H 'Accept: application/json'     -H 'Content-Type: application/json'     https://$ENDPOINT/oapi/v1/namespaces/$NAMESPACE/deploymentconfigs
+  816  curl -k -X POST     -d @-  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' https://$OCPURL/api/v1/namespaces
+  818  curl -k -X POST     -d @-  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' https://$OCPURL/api/v1/namespaces
+  821  curl -k -X POST  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' https://$OCPURL/api/v1/namespaces
+  823  curl -k -X POST  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/namespaces
+  824  curl -k -X POST     -d @-  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/namespaces
+  825  curl -k -X GET  -d @-  -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/namespaces
+  826  curl -k -X GET -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/namespaces
+  857  history | grep curl
+  858  curl -k -X GET -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/namespaces
+  859  curl -k -X GET -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/pods?labelSelector=deploymentconfig
+  860  curl -k -X GET -H "Authorization: Bearer $OCPTOKEN" -H 'Accept: application/yaml' -H 'Content-Type: application/yaml' $OCPURL/api/v1/pods?labelSelector=deploymentconfig=docker-registry
+  861  history | grep curl
